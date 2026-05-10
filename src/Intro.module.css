@@ -1,0 +1,198 @@
+/* ── SECTION ────────────────────────────────────────── */
+.intro {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* ── BACKGROUND VIDEO ───────────────────────────────── */
+.bgVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.bgOverlay {
+  position: absolute;
+  inset: 0;
+  /* background: rgba(0, 0, 0, 0.55); */
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ── TEXT BLOCK ─────────────────────────────────────── */
+.text {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  width: 100%;
+  padding-left: 80px;
+  padding-right: 24px;
+  top: -20px;
+}
+
+/* ── NAME ───────────────────────────────────────────── */
+.name {
+  text-transform: uppercase;
+  font-size: clamp(14px, 1.5rem, 24px);
+  letter-spacing: 0.3em;
+  color: var(--color-text-body);
+  margin-bottom: 40px;
+  font-weight: 500;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+}
+
+.name[data-visible='true'] {
+  opacity: 1;
+}
+
+/* ── TITLE ──────────────────────────────────────────── */
+.title {
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  line-height: 1;
+  font-size: clamp(48px, 8vw, 120px);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+/* ── WORD ANIMATIONS ────────────────────────────────── */
+@keyframes reveal {
+  0%   { transform: scale3d(0, 1, 1); transform-origin: left; }
+  50%  { transform: scale3d(1, 1, 1); transform-origin: left; }
+  51%  { transform: scale3d(1, 1, 1); transform-origin: right; }
+  100% { transform: scale3d(0, 1, 1); transform-origin: right; }
+}
+
+@keyframes introTextReveal {
+  0%   { color: transparent; }
+  50%  { color: transparent; }
+  60%  { color: var(--color-text); }
+  100% { color: var(--color-text); }
+}
+
+.word {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  line-height: 1;
+  animation-duration: 1.5s;
+  animation-delay: var(--delay, 0s);
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  color: transparent;
+  transition: opacity 0.5s ease 0.4s;
+  isolation: isolate;
+}
+
+/* Accent sweep overlay */
+.word::after {
+  content: '';
+  background: var(--color-accent);
+  animation-duration: 1.5s;
+  animation-delay: var(--delay, 0s);
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale3d(0, 1, 1);
+  transform-origin: left;
+  position: absolute;
+  inset: 0 -0.02em 0 0;
+  z-index: 1;
+  will-change: transform;
+}
+
+/* '+' prefix for disciplines */
+.word[data-plus='true']::before {
+  content: '+';
+  margin-right: 10px;
+  opacity: 0.4;
+}
+
+/* ENTERING — play both animations */
+.word[data-status='entering'] {
+  animation-name: introTextReveal;
+}
+
+.word[data-status='entering']::after {
+  animation-name: reveal;
+}
+
+/* ENTERED — static final state */
+.word[data-status='entered'] {
+  color: var(--color-text);
+}
+
+.word[data-status='entered']::after {
+  opacity: 0;
+  transform: scale3d(0, 1, 1);
+  transform-origin: right;
+}
+
+/* EXITING — fade out (discipline only) */
+.word[data-status='exiting'] {
+  color: var(--color-text);
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  z-index: 0;
+}
+
+/* ── HORIZONTAL LINE ────────────────────────────────── */
+@keyframes introLine {
+  0%   { transform: scaleX(0); opacity: 1; }
+  100% { transform: scaleX(1); opacity: 1; }
+}
+
+.line {
+  height: 2px;
+  background: rgba(170, 170, 170, 0.3);
+  width: 100%;
+  margin-left: 20px;
+  animation-duration: 0.8s;
+  animation-delay: 1s;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: left;
+  transform: scaleX(0);
+  opacity: 0;
+  position: relative;
+  top: 0.05em;
+}
+
+.line[data-status='entering'] {
+  animation-name: introLine;
+}
+
+.line[data-status='entered'] {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+/* ── MOBILE ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .intro {
+    padding-top: 56px;
+  }
+
+  .text {
+    padding-left: 24px;
+    top: 0;
+  }
+}

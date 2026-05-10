@@ -1,0 +1,306 @@
+/* ── SECTION ─────────────────────────────────────────── */
+.contact {
+  min-height: 100vh;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  padding: 120px 0;
+  position: relative;
+  background: var(--color-bg);
+}
+
+/* ── LAYERS (form ↔ success swap) ────────────────────── */
+.layer {
+  grid-area: 1 / 1;
+  width: 100%;
+  max-width: 800px;
+  padding: 0 80px;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.in {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.out {
+  opacity: 0;
+  transform: translateY(-24px);
+  pointer-events: none;
+}
+
+.hiddenLayer {
+  opacity: 0;
+  transform: translateY(24px);
+  pointer-events: none;
+}
+
+/* ── FORM ─────────────────────────────────────────────── */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* ── TITLE ────────────────────────────────────────────── */
+.title {
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  margin: 0;
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity  0.9s cubic-bezier(0.4, 0, 0.2, 1) var(--delay, 0s),
+    transform 0.9s cubic-bezier(0.4, 0, 0.2, 1) var(--delay, 0s);
+}
+
+.title[data-visible='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── EMAIL LINE ───────────────────────────────────────── */
+.emailLine {
+  font-size: 16px;
+  color: var(--color-text-body);
+  margin: -16px 0 0;
+  opacity: 0;
+  transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1) var(--delay, 0s);
+}
+
+.emailLine[data-visible='true'] {
+  opacity: 1;
+}
+
+.emailLink {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-accent);
+  font-size: inherit;
+  font-family: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.emailLink:hover {
+  opacity: 0.8;
+}
+
+/* ── DIVIDER WRAPPER ──────────────────────────────────── */
+.dividerWrap {
+  opacity: 0;
+  transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1) var(--delay, 0s);
+}
+
+.dividerWrap[data-visible='true'] {
+  opacity: 1;
+}
+
+/* ── FLOATING INPUT / TEXTAREA ────────────────────────── */
+.inputWrap {
+  position: relative;
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity  0.7s cubic-bezier(0.4, 0, 0.2, 1) var(--delay, 0s),
+    transform 0.7s cubic-bezier(0.4, 0, 0.2, 1) var(--delay, 0s);
+}
+
+.inputWrap[data-visible='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+.label {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  font-size: 15px;
+  color: var(--color-text-body);
+  pointer-events: none;
+  transform-origin: left top;
+  transition:
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    color     0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.label[data-filled='true'],
+.label[data-focused='true'] {
+  transform: scale(0.8) translateY(-24px);
+  color: var(--color-accent);
+}
+
+.inputField {
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(170, 170, 170, 0.2);
+  color: var(--color-text);
+  font-size: 16px;
+  font-family: inherit;
+  padding: 12px 0 8px;
+  outline: none;
+  resize: none;
+  line-height: 1.5;
+}
+
+.inputField::placeholder {
+  color: transparent;
+}
+
+.textarea {
+  overflow: hidden;
+  min-height: 42px;
+}
+
+.textareaWrap {
+  padding-bottom: 4px;
+}
+
+/* ── UNDERLINE FOCUS INDICATOR ────────────────────────── */
+.underline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.underline[data-focused='true'] {
+  transform: scaleX(1);
+}
+
+/* ── ERROR MESSAGE ────────────────────────────────────── */
+.formError {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #e06c75;
+}
+
+/* ── SUBMIT BUTTON ────────────────────────────────────── */
+.button {
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background: var(--color-accent);
+  color: #0a0a0a;
+  border: none;
+  border-radius: 0;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity   0.7s cubic-bezier(0.4, 0, 0.2, 1) var(--delay, 0s),
+    transform 0.7s cubic-bezier(0.4, 0, 0.2, 1) var(--delay, 0s),
+    background 0.2s ease;
+}
+
+.button[data-visible='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+.button:hover:not(:disabled) {
+  background: #6fd000;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.buttonIcon {
+  flex-shrink: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.button[data-sending='true'] .buttonIcon {
+  transform: translateX(4px) translateY(-4px);
+  opacity: 0;
+}
+
+.buttonText {
+  white-space: nowrap;
+}
+
+/* ── SUCCESS STATE ────────────────────────────────────── */
+.complete {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.completeTitle {
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  margin: 0;
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity  0.9s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.completeTitle[data-success='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+.completeText {
+  font-size: 18px;
+  color: var(--color-text-body);
+  margin: 0;
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity  0.9s cubic-bezier(0.4, 0, 0.2, 1) var(--delay, 0.2s),
+    transform 0.9s cubic-bezier(0.4, 0, 0.2, 1) var(--delay, 0.2s);
+}
+
+.completeText[data-success='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .layer {
+    padding: 0 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact {
+    padding: 80px 0;
+  }
+
+  .layer {
+    padding: 0 20px;
+  }
+
+  .button {
+    width: 100%;
+    justify-content: center;
+  }
+}

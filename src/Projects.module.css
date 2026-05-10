@@ -1,0 +1,426 @@
+/* ── SECTION ─────────────────────────────────────────── */
+.section {
+  height: 100vh;
+  max-height: 1080px;
+  width: 100%;
+  margin: 120px 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+}
+
+.section[data-first='true'] {
+  margin-top: 80px;
+}
+
+/* ── CONTENT GRID ────────────────────────────────────── */
+.content {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 80px;
+  display: grid;
+  grid-template-columns: 36% 1fr;
+  gap: 48px;
+}
+
+.section[data-alternate='true'] .content {
+  grid-template-columns: 1fr 36%;
+}
+
+/* ── DETAILS (text side) ─────────────────────────────── */
+.details {
+  position: relative;
+  z-index: 2;
+  align-self: center;
+  background:rgba(0, 0, 0, 0.471)
+}
+
+.index {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.indexNumber {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-accent);
+  opacity: 0;
+  transform: translateX(-12px);
+  transition: opacity  0.4s cubic-bezier(0.4, 0, 0.2, 1) 1.3s,
+              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) 1.3s;
+}
+
+.indexNumber[data-visible='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+.title {
+  font-size: clamp(28px, 3.5vw, 48px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  margin: 0 0 20px;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity  0.9s cubic-bezier(0.4, 0, 0.2, 1) 0.3s,
+              transform 0.9s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+}
+
+.title[data-visible='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+.description {
+  font-size: clamp(15px, 1.1vw, 18px);
+  line-height: 1.7;
+  color: var(--color-text-body);
+  margin: 0;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity  0.9s cubic-bezier(0.4, 0, 0.2, 1) 0.5s,
+              transform 0.9s cubic-bezier(0.4, 0, 0.2, 1) 0.5s;
+}
+
+.description[data-visible='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── PREVIEW (mockup side) ───────────────────────────── */
+.preview {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 600px;
+}
+
+/* ── KATAKANA SVG ────────────────────────────────────── */
+.katakana {
+  position: absolute;
+  opacity: 0;
+  fill: rgba(255, 255, 255, 0.06);
+  pointer-events: none;
+  transition: opacity 1s ease 0.6s;
+}
+
+.katakana[data-visible='true'] { opacity: 1; }
+
+.katakana[data-device='laptop'] {
+  width: 100%;
+  right: -36%;
+  bottom: 24%;
+  transform: translateY(50%);
+}
+
+.katakana[data-device='phone'] {
+  width: 100%;
+  bottom: 23%;
+  transform: translateY(50%);
+}
+
+/* ══════════════════════════════════════════════════════
+   LAPTOP MOCKUP
+══════════════════════════════════════════════════════ */
+.laptopScene {
+  perspective: 1400px;
+  perspective-origin: 50% 38%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.laptopGroup {
+  --tx: 0deg;
+  --ty: 0deg;
+  transform-style: preserve-3d;
+  transform: rotateX(calc(12deg + var(--tx))) rotateY(calc(-6deg + var(--ty)));
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  width: 440px;
+}
+
+/* LID */
+.lid {
+  width: 440px;
+  height: 282px;
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  transform-origin: bottom center;
+  transform-style: preserve-3d;
+  /* closed = flat down */
+  transform: rotateX(-90deg);
+  transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lid[data-open='true'] {
+  transform: rotateX(-18deg);
+}
+
+.lidFront {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #2a2a2e 0%, #1c1c20 100%);
+  border-radius: 12px 12px 3px 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+}
+
+.laptopScreen {
+  width: calc(100% - 26px);
+  height: calc(100% - 24px);
+  background: #0a0a0a;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.camera {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #333;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.08);
+}
+
+.lidBack {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #222226 0%, #18181c 100%);
+  border-radius: 12px 12px 3px 3px;
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+}
+
+/* BASE */
+.laptopBase {
+  width: 440px;
+  height: 272px;
+  background: linear-gradient(180deg, #222226 0%, #1a1a1e 100%);
+  border-radius: 4px 4px 12px 12px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  box-shadow:
+    0 40px 100px rgba(0,0,0,0.6),
+    0 14px 40px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+.keyboard {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 3px;
+  width: 375px;
+  margin-top: 8px;
+}
+
+.key {
+  height: 18px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.4);
+}
+
+.trackpad {
+  width: 130px;
+  height: 82px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.baseEdge {
+  position: absolute;
+  bottom: -8px;
+  left: 12px;
+  right: 12px;
+  height: 8px;
+  background: linear-gradient(180deg, #111 0%, #0a0a0a 100%);
+  border-radius: 0 0 8px 8px;
+}
+
+/* ══════════════════════════════════════════════════════
+   PHONE MOCKUP
+══════════════════════════════════════════════════════ */
+.phoneGroup {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+/* Each phone wrapper holds its natural offset via CSS vars.
+   It springs up from y+80px → natural position when visible. */
+.phoneWrap {
+  position: absolute;
+  opacity: 0;
+  transform: translate(var(--px, 0px), calc(var(--py, 0px) + 80px)) rotate(var(--pr, 0deg));
+  transition:
+    opacity   0.8s cubic-bezier(0.4, 0, 0.2, 1) var(--pd, 0s),
+    transform 0.8s cubic-bezier(0.34, 1.4, 0.64, 1) var(--pd, 0s);
+  filter: drop-shadow(0 28px 56px rgba(0,0,0,0.55));
+}
+
+.phoneWrap[data-visible='true'] {
+  opacity: 1;
+  transform: translate(var(--px, 0px), var(--py, 0px)) rotate(var(--pr, 0deg));
+}
+
+.phone {
+  width: 185px;
+  height: 390px;
+  background: linear-gradient(160deg, #2a2a2e 0%, #1a1a1e 100%);
+  border-radius: 42px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px 10px 12px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.08),
+    0 2px 4px rgba(0,0,0,0.4);
+}
+
+.notch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 28px;
+  background: #111;
+  border-radius: 0 0 20px 20px;
+  z-index: 2;
+}
+
+.phoneScreen {
+  width: 100%;
+  flex: 1;
+  background: #0a0a0a;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.homeBar {
+  width: 72px;
+  height: 4px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 2px;
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+
+/* ── SHARED SCREEN MEDIA ─────────────────────────────── */
+.screenMedia {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════════════ */
+
+/* ── TABLET (≤1024px) ────────────────────────────────── */
+@media (max-width: 1024px) {
+  .content,
+  .section[data-alternate='true'] .content {
+    grid-template-columns: 100%;
+    padding: 0 40px;
+  }
+
+  .section {
+    height: auto;
+    max-height: none;
+    padding: 80px 0;
+    margin: 60px 0;
+  }
+
+  .section[data-first='true'] { margin-top: 60px; }
+
+  .preview {
+    height: 420px;
+  }
+
+  .laptopGroup {
+    transform: rotateX(calc(12deg + var(--tx))) rotateY(calc(-6deg + var(--ty))) scale(0.75);
+  }
+
+  /* Scale phone offsets with the same factor */
+  .phoneWrap {
+    transform: translate(calc(var(--px, 0px) * 0.75), calc((var(--py, 0px) + 80px) * 0.75)) rotate(var(--pr, 0deg)) scale(0.75);
+  }
+  .phoneWrap[data-visible='true'] {
+    transform: translate(calc(var(--px, 0px) * 0.75), calc(var(--py, 0px) * 0.75)) rotate(var(--pr, 0deg)) scale(0.75);
+  }
+}
+
+/* ── MOBILE (≤768px) ─────────────────────────────────── */
+@media (max-width: 768px) {
+  .content,
+  .section[data-alternate='true'] .content {
+    padding: 0 20px;
+    gap: 24px;
+  }
+
+  .section {
+    padding: 60px 0;
+    margin: 40px 0;
+  }
+
+  .section[data-first='true'] { margin-top: 60px; }
+
+  .preview {
+    height: 360px;
+  }
+
+  .katakana { display: none; }
+
+  /* Flat perspective on mobile so the lid doesn't clip */
+  .laptopScene {
+    perspective: 900px;
+    perspective-origin: 50% 60%;
+  }
+
+  .laptopGroup {
+    transform: rotateX(2deg) rotateY(0deg) scale(0.52);
+  }
+
+  .lid[data-open='true'] {
+    transform: rotateX(-20deg);
+  }
+
+  /* Phones: tighter offsets so they both fit inside 320px */
+  .phoneWrap {
+    transform: translate(calc(var(--px, 0px) * 0.5), calc((var(--py, 0px) + 60px) * 0.5)) rotate(var(--pr, 0deg)) scale(0.5);
+  }
+  .phoneWrap[data-visible='true'] {
+    transform: translate(calc(var(--px, 0px) * 0.5), calc(var(--py, 0px) * 0.5)) rotate(var(--pr, 0deg)) scale(0.5);
+  }
+}
