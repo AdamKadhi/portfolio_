@@ -7,7 +7,7 @@ function ProfileImage() {
   const [loaded,           setLoaded]           = useState(false);
   const [showPlaceholder,  setShowPlaceholder]  = useState(true);
   const ref    = useRef();
-  const inView = useInViewport(ref, { threshold: 0.1 });
+  const inView = useInViewport(ref, { threshold: 0.1, once: true });
 
   return (
     <div ref={ref} className={styles.imageReveal} data-visible={inView}>
@@ -45,7 +45,7 @@ function ProfileImage() {
 export default function Profile() {
   const sectionRef = useRef();
   const [focused,  setFocused] = useState(false);
-  const inView   = useInViewport(sectionRef, { threshold: 0.15 });
+  const inView   = useInViewport(sectionRef, { threshold: 0.15, once: true });
   const visible  = inView || focused;
 
   return (
