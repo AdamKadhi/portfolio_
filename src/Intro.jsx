@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { DecoderText } from './utils.jsx';
 import styles from './Intro.module.css';
-import bgVideo from '../public/bg.mp4';
+import bgVideo from '../public/bggg.mp4';
 /* ── CONFIG ──────────────────────────────────────────── */
 const NAME        = 'Adam Kadhi';
 const ROLE        = 'Developer';
